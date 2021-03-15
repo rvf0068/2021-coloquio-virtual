@@ -1,0 +1,479 @@
+#+macro: newline @@latex:\\[0.6em]@@ @@html:<br>@@
+
+#+title: Aplicaciones de la topología combinatoria
+#+author: Rafael Villarroel Flores, UAEH
+#+date: 14 de marzo de 2021{{{newline}}}\bfseries XXXVI Coloquio Víctor Neumann-Lara
+#+setupfile: options.org
+
+#+latex: \setbeamercolor{alerted text}{fg=teal}
+#+latex_header: \usepackage{fontawesome}
+
+* Hidden code							   :noexport:
+
+#+name: fullheightgraphic
+#+begin_src latex :var yourimage="" 
+\setbeamertemplate{navigation symbols}{}
+\begin{tikzpicture}[remember picture,overlay]
+    \node[xshift=0cm,yshift=0cm] at (current page.center) {
+        \includegraphics[width=\paperwidth]{yourimage}
+    };
+\end{tikzpicture}
+#+end_src
+
+
+
+* Complejos simpliciales
+
+** Parte
+   :PROPERTIES:
+   :BEAMER_opt: plain
+   :END:
+
+#+call: fullheightgraphic(yourimage="images/paperwork") :results latex
+
+#+begin_export latex
+\renewcommand*\sfdefault{ugq}
+\sffamily\bfseries
+\begin{tikzpicture}[remember picture,overlay,huge/.style={font=\Huge, inner sep=.3cm}]
+  \node[%
+  huge,
+  right,
+  align=left,
+  rotate=5,
+  yshift=-1cm,
+  opacity=0.85,
+  text width=4.4cm,
+  minimum height=8.5cm,
+  fill=white]%
+  {\color{red!80!black}Teoría};
+\end{tikzpicture}
+#+end_export
+
+** Complejos simpliciales
+   
+***                                                         :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+    Los complejos simpliciales proporcionan una forma inmediata de
+    aplicar topología en combinatoria.
+
+#+beamer: \pause
+
+*** Complejo simplicial 				       :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+    Un *complejo simplicial* \(\Delta\) es un conjunto de subconjuntos finitos de un conjunto \(X\), cerrado bajo inclusión. Los elementos de \(\Delta\) se llaman *simplejos* o *caras*.
+    
+*** Dimensión
+    Si \(\sigma\in\Delta\) tiene \(n+1\) elementos, se dice que su
+    *dimensión* es \(\dim\sigma=n\).
+
+    Los simplejos de dimensión \(n\) se llaman \(n\)-simplejos, los \(0\)-simplejos se llaman *vértices*.
+
+** Ejemplos
+
+***  Ejemplo                                                :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+
+     Consideremos los complejos \(\Delta_{1}\) y \(\Delta_{2}\) dados por:
+     \begin{align*}
+     \Delta_{1} &=\{\emptyset, \{1\},\{2\},\{3\},\{1,2\},\{1,3\},\{2,3\}\},\\
+     \Delta_{2} &=\Delta_{1}\cup\{\{1,2,3\}\}.
+     \end{align*}
+
+*** Dibujo de \(\Delta_{1}\)                                          :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :END:
+    
+     #+name: complejo-01
+     #+header: :imagemagick yes :iminoptions -density 300 -resize 400
+     #+header: :packages '(("" "tikz")) :border 1pt
+     #+header: :file (by-backend (latex "complejo-01.tikz") (beamer "complejo-01.tikz") (t "complejo-01.png"))
+     #+header: :cache yes
+     #+begin_src latex :results raw file 
+\begin{tikzpicture}
+  \draw[very thick] (90:1cm) circle (0.3mm) node[above] {$1$} -- (210:1cm) circle (0.3mm) node[below] {$2$} --
+  (330:1cm) circle (0.3mm) node [below] {$3$} -- (90:1cm);
+  \draw (-90:1cm) node [fill=teal!50!white,below]{$\Delta_{1}$};
+\end{tikzpicture}
+    #+end_src
+    
+    #+attr_html: :width 400 :alt complejo-01 :align center
+    #+attr_latex: :float t :width ""
+    #+RESULTS[3fdcfa7b7f77a3f0951c29f9d825094662df1eb4]: complejo-01
+    [[file:complejo-01.png]]
+
+*** Ejemplo \(\Delta_{2}\)                                            :BMCOL:
+    :PROPERTIES:
+    :BEAMER_col: 0.4
+    :END:
+
+     #+name: complejo-02
+     #+header: :imagemagick yes :iminoptions -density 300 -resize 400
+     #+header: :packages '(("" "tikz")) :border 1pt
+     #+header: :file (by-backend (latex "complejo-02.tikz") (beamer "complejo-02.tikz") (t "complejo-02.png"))
+     #+header: :cache yes
+     #+begin_src latex :results raw file
+\begin{tikzpicture}
+  \draw[very thick] (90:1cm) circle (0.3mm) node[above] {$1$} -- (210:1cm) circle (0.3mm) node[below] {$2$} --
+  (330:1cm) circle (0.3mm) node [below] {$3$} -- (90:1cm);
+  \draw[fill, top color=black!30, bottom color=black!80] (90:1cm) -- (210:1cm) -- (330:1cm) -- cycle;
+  \draw (-90:1cm) node [fill=teal!50!white,below]{$\Delta_{2}$};
+\end{tikzpicture}    
+     #+end_src
+
+     #+attr_html: :width 400 :alt complejo-02 :align center
+     #+attr_latex: :float t :width ""
+     #+RESULTS[487114e455724d3317c7c610afafcc3ae8253ef6]: complejo-02
+     [[file:complejo-02.png]]
+
+** Otro ejemplo
+
+Consideremos el complejo simplicial con caras maximales \(\{1,2,3,4\},\{4,5,6\},\{3,7\}\)
+   
+#+name: ejemplo-complejo
+#+header: :file (by-backend (latex "ejemplo-complejo.tikz") (beamer "ejemplo-complejo.tikz") (t "ejemplo-complejo.png"))
+#+begin_src latex
+ \begin{tikzpicture}
+   \SetVertexNotLabeledSmall
+   \SetUpEdge[color=black!50!green,lw=2pt]
+   \setxyzvec[12]
+   \grEmptyCycle*[prefix=a,RA=2,rotation=180,x=2]{4,2,3}
+   \grEmptyCycle*[prefix=b,RA=2,x=-2]{4,5,6}
+   \draw (a2) node [below]{3};
+   \draw (a1) node [left]{2};
+   \draw (a0) node [above]{4};
+   \draw (b1) node [above]{5};
+   \draw (b2) node [above]{6};
+   \pgfmathsetmacro{\xc}{3+2*sqrt(3)}
+   \pgfmathsetmacro{\yc}{sqrt(3)}
+   \Vertex[x=\xc,y=\yc,L=7]{c}
+   \pgfmathsetmacro{\he}{2*sqrt(2)}
+   \begin{scope}[xyplane=\he]
+     \Vertex[x=2,y=0,L=1]{d}
+   \end{scope}
+   \draw (c) node [left]{7};
+   \draw (d) node [above]{1};
+      \pause
+      % 3-23
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{a2}{c}{\r}}}
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{a0}{d}{\r}}}
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{a1}{d}{\r}}}
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{a2}{d}{\r}}}
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{a0}{a1}{\r}}}
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{a1}{a2}{\r}}}
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{a2}{a0}{\r}}}
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{b0}{b1}{\r}}}
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{b1}{b2}{\r}}}
+      \multido{\r=0+0.05,\iA=3+1}{21}{\only<\iA>{\linea{b2}{b0}{\r}}}
+      \uncover<24->{%
+      \linea{a2}{c}{1}
+      \linea{a0}{d}{1}
+      \linea{a1}{d}{1}
+      \linea{a2}{d}{1}
+      \linea{a0}{a1}{1}
+      \linea{a1}{a2}{1}
+      \linea{a2}{a0}{1}
+      \linea{b0}{b1}{1}
+      \linea{b1}{b2}{1}
+      \linea{b2}{b0}{1}
+      }
+   % % 25-45
+   \multido{\r=1+-0.05,\iA=25+1}{21}{\only<\iA>{\trapecio{a2}{a0}{a1}{0.8}{\r}}}
+   \multido{\r=1+-0.05,\iA=25+1}{21}{\only<\iA>{\trapecio{d}{a0}{a1}{0.8}{\r}}}
+   \multido{\r=1+-0.05,\iA=25+1}{21}{\only<\iA>{\trapecio{d}{a1}{a2}{0.8}{\r}}}
+   \multido{\r=1+-0.05,\iA=25+1}{21}{\only<\iA>{\trapecio{d}{a0}{a2}{0.8}{\r}}}
+   \multido{\r=1+-0.05,\iA=25+1}{21}{\only<\iA>{\trapecio{b0}{b1}{b2}{0.8}{\r}}}
+   % 46
+   \uncover<46->{%
+     \trapecio{b0}{b1}{b2}{0.8}{0}
+     \trapecio{d}{a1}{a2}{0.8}{0}
+     \trapecio{d}{a0}{a2}{0.8}{0}}
+   % % 47
+   \uncover<47>{\filldraw[black!50!green,opacity=0.8] (a0.center) --
+     (a2.center) -- (a1.center) -- (d.center);}
+ \end{tikzpicture}
+#+end_src
+   
+#+attr_html: :width 400 :alt ejemplo-complejo :align center
+#+attr_latex: :float t :width ""
+#+results: ejemplo-complejo
+
+** Espacio topológico asociado
+
+   - En general, a cualquier complejo simplicial se le asocia un espacio
+     topológico, llamado su *realización geométrica*.
+
+   - La realización geométrica es un *funtor* de la categoría de
+     complejos simpliciales a la categoría de espacios topológicos.
+   
+** Complejos simpliciales en gráficas
+
+   - Un primer uso de los complejos simpliciales en combinatoria se dio
+     en la prueba de Lovász (1978) de la conjetura de Kneser (1953):
+     \begin{displaymath}
+     \chi(KG_{n,k})=n-2k+2
+     \end{displaymath}
+     
+   - Para demostrarlo, Lovász asoció a cada gráfica \(G\) su *complejo de
+     vecindades* \(\mathcal{N}(G)\), cuyo conjunto de simplejos son los conjuntos de vértices
+     con un vecino común.
+     
+     #+name: vecindades-01
+     #+header: :imagemagick yes :iminoptions -density 300 -resize 400
+     #+header: :packages '(("" "tikz")) :border 1pt
+     #+header: :file (by-backend (latex "vecindades-01.tikz") (beamer "vecindades-01.tikz") (t "vecindades-01.png"))
+     #+header: :cache yes
+     #+begin_src latex :results raw file
+\begin{tikzpicture}
+    \draw
+    (0:1) node[above] {$d$} --
+    (0,0) node[above] {$b$} --
+    (150:1) node[above] {$a$} --
+    (210:1) node[below] {$c$};
+    \draw[every node/.style={circle, draw, fill=black!50,inner sep=0pt, minimum width=4pt}]
+    (0:1) node {} --
+    (0,0) node {} --
+    (150:1) node {} --
+    (210:1) node {} --
+    (0,0);
+  \draw (0,-1) node [fill=teal!50!white,below]{gráfica $G$};
+  \filldraw[fill=blue!50!white] (4,0) node[circle,left]{$d$} --
+   (5,0.5) node[above]{$a$} --
+   (5,-0.5) node[below]{$c$} -- cycle;
+   \draw (5,0.5) -- (6,0)  node[right]{$b$} -- (5,-0.5);
+   \draw (5,-1) node [fill=teal!50!white,below]{complejo $\mathcal{N}(G)$};
+\end{tikzpicture}
+     #+end_src
+     
+     #+attr_html: :width 400 :alt vecindades-01 :align center
+     #+attr_latex: :float t :width ""
+     #+RESULTS[2ee3b624942bc3c69f0459192640aa314f1562b9]: vecindades-01
+     [[file:vecindades-01.png]]
+
+** El complejo de completas
+
+*** \(\Delta(G)\)                                              :B_definition:
+    :PROPERTIES:
+    :BEAMER_env: definition
+    :END:
+    Dada una gráfica simple \(G\), el complejo simplicial
+    \(\Delta(G)\) tiene como simplejos a las subgráficas completas de \(G\).
+
+***                                                         :B_ignoreheading:
+    :PROPERTIES:
+    :BEAMER_env: ignoreheading
+    :END:
+    Se usa \(\Delta(G)\) para asociarle conceptos
+    topológicos a las gráficas.
+
+    Por ejemplo, diremos que las gráficas
+    \(G_{1}\), \(G_{2}\) son homotópicas si \(\Delta(G_{1})\) es
+    homotópico a \(\Delta(G_{2})\).
+
+**  Ejemplo
+
+     Gráficas homeomorfa a la esfera $S^{2}$:
+
+    \SetVertexNotLabeledSmall
+    \suspension{5}{1}{17}{1.6}{0}
+    
+** Muchos otros complejos simpliciales en combinatoria
+
+***                                                          :B_column:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: column
+    :BEAMER_col: 0.5
+    :END:
+    #+attr_latex: :height 7cm
+   [[file:scog.jpg]]
+
+
+***                                                          :B_column:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: column
+    :BEAMER_col: 0.5
+    :END:
+    #+attr_latex: :height 7cm
+    [[file:kozlov.jpg]]
+
+** Topología y gráfica de clanes
+
+   En mi investigación, me han interesado preguntas sobre la relación entre la topología y el operador de clanes. Por ejemplo:
+
+   - (Bandelt-Prisner, 1991, Prisner 1992) Si \(G\) es desmantelable, o si \(G\) es clan-Helly entonces \(G\simeq K(G)\).
+   - *Pregunta:* Si \(K^{n}(G)\) es desmantelable o clan-Helly para alguna \(n\), ¿se sigue que \(G\simeq K(G)\simeq K^{2}(G)\simeq\cdots\simeq K^{n}(G)\)?
+   - (Larrión, Pizaña, V., 2013) Para toda gráfica \(H\) existe una gráfica \(G\) tal que \(G\simeq H\), con \(G\) clan-divergente.
+   - *Pregunta:* ¿Existe una gráfica \(G\) tal que \(G\simeq S^{2}\) y \(G\) sea clan-convergente?
+
+* Aplicaciones
+
+** Parte
+   :PROPERTIES:
+   :BEAMER_opt: plain
+   :END:
+
+#+call: fullheightgraphic(yourimage="images/paperwork") :results latex
+
+#+begin_export latex
+\renewcommand*\sfdefault{ugq}
+\sffamily\bfseries
+\begin{tikzpicture}[remember picture,overlay,huge/.style={font=\huge, inner sep=.3cm}]
+  \node[%
+  huge,
+  right,
+  align=left,
+  rotate=5,
+  yshift=-1cm,
+  opacity=0.85,
+  text width=4.4cm,
+  minimum height=8.5cm,
+  fill=white]%
+  {\color{red!80!black}Aplicaciones};
+\end{tikzpicture}
+#+end_export
+
+** Aplicaciones de complejos simpliciales
+
+   Recientemente me enteré que el concepto de complejo simplicial, como *generalización* del de gráfica, ha encontrado varias aplicaciones.
+
+***                                                          :B_column:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: column
+    :BEAMER_col: 0.3
+    :END:
+    #+attr_latex: :height 5.2cm
+    [[file:newman.pdf]]
+
+***                                                          :B_column:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: column
+    :BEAMER_col: 0.3
+    :END:
+    #+attr_latex: :height 5.2cm
+    [[file:giusti1.pdf]]
+
+
+***                                                          :B_column:BMCOL:
+    :PROPERTIES:
+    :BEAMER_env: column
+    :BEAMER_col: 0.3
+    :END:
+    #+attr_latex: :height 5.2cm
+    [[file:reimann.pdf]]
+
+** Complejos simpliciales de gráficas dirigidas
+
+   - En el artículo /Cliques of Neurons Bound into Cavities Provide a Missing Link between Structure and Function/ los autores forman una gráfica dirigida \(D\) donde los vértices son neuronas, y las flechas representan actividad neuronal.
+
+     #+attr_latex: :width 7cm
+     [[file:neuron.png]]
+
+   - Por simplicidad, supondremos que entre dos vértices dados de \(D\) existe cuando mucho una flecha.
+
+** Simplejos 
+   
+   - Los autores muestran que entre todos los torneos de \(n\) vértices, los que tienen mayor /direccionalidad/ son los acíclicos.
+
+     #+beamer: \bigskip
+     
+     #+name: non-acyclic-acyclic
+     #+header: :file (by-backend (latex "non-acyclic-acyclic.tikz") (beamer "non-acyclic-acyclic.tikz") (t "non-acyclic-acyclic.png"))
+     #+begin_src latex
+\begin{tikzpicture}
+  \SetVertexNotLabeledSmall
+  \tikzset{EdgeStyle/.style={->, line width=1pt}}
+  \grEmptyCycle[RA=1.6]{4}
+  \Edge(a0)(a1)
+  \Edge(a1)(a2)
+  \Edge(a2)(a3)
+  \Edge(a3)(a0)
+  \Edge(a0)(a2)
+  \Edge(a1)(a3)
+  \grEmptyCycle[x=6, RA=1.6, prefix=b]{4}
+  \Edge(b1)(b0)
+  \Edge(b2)(b1)
+  \Edge(b2)(b3)
+  \Edge(b3)(b0)
+  \Edge(b2)(b0)
+  \Edge(b1)(b3)
+  \uncover<2->{\shadedraw[top color=red,opacity=0.8] (b2) circle (0.2cm);}
+  \uncover<2->{\draw (b2) node [fill=red!50!white,below left=0.3cm]{\small fuente};}
+  \uncover<3->{\shadedraw[top color=teal,opacity=0.8] (b0) circle (0.2cm);}
+  \uncover<3->{\draw (b0) node [fill=teal!50!white,below right=0.3cm]{\small sumidero};}
+\end{tikzpicture}
+     #+end_src
+        
+     #+attr_html: :width 400 :alt non-acyclic-acyclic :align center
+     #+attr_latex: :float t :width ""
+     #+results: non-acyclic-acyclic
+
+   #+beamer: \pause\pause
+   
+   - Los autores entonces le llaman *clan dirigido* (/directed clique/) a los *torneos acíciclos*.
+
+   - Como cualquier subgráfica de un torneo acíclico induce un torneo acíclico, podemos definir  un complejo simplicial \(\Delta(D)\) como el complejo simplicial cuyos simplejos son los subconjuntos de vértices de \(D\) que inducen torneos acíclicos.
+
+** Resultados
+
+   Los autores estudiaron un modelo de una sección del cerebro de una rata. Y un modelo completo del gusano /Caenorhabditis Elegans./ Una de sus conclusiones es:
+
+   #+beamer: \medskip
+   
+   #+begin_quote
+We found a remarkably high number and variety of high-dimensional directed cliques and cavities, which had not been seen before in neural networks, either biological or artificial, and in far greater numbers than those found in various null models of directed networks.
+   #+end_quote
+
+   #+beamer: \pause
+   
+   #+attr_latex: :height 3.5cm
+   [[file:muchossimplejos.png]]
+
+* Gracias                                                   :B_ignoreheading:
+   :PROPERTIES:
+   :BEAMER_env: ignoreheading
+   :END:
+\begin{frame}
+   \begin{center}
+   \begin{huge}
+   Gracias
+   \end{huge}
+
+  \bigskip
+  \bigskip
+
+  \begin{large}
+  \faGithub{} \texttt{github.com/rvf0068/2021-coloquio-virtual}
+
+   \bigskip
+
+  \faTwitter{} \texttt{@rvf0068}
+
+   \bigskip
+
+   \faEnvelope{} \texttt{rafaelv@uaeh.edu.mx}
+
+  \end{large}
+  \end{center}
+\end{frame}
+
+
+     
+    
+   
+
+
+   
+* COMMENT Local Variables
+
+# Local Variables:
+# org-confirm-babel-evaluate: nil
+# org-beamer-outline-frame-title: "Esbozo"
+# org-latex-compiler: "xelatex"
+# ispell-local-dictionary: "castellano"
+# End:
